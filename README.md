@@ -12,5 +12,7 @@ Program for keeping track of animals.
 
 ## Usage
 Clone the repository.
- 'cd AnimalTracker'
- 'python3 AnimalTracker.py'
+'''
+cd AnimalTracker
+python3 AnimalTracker.py
+'''
