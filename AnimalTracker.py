@@ -8,6 +8,7 @@ Description: An app to keep track of your Animals
 '''
 
 import sys
+sys.path.append('./UI/')
 import os
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox, QMenuBar, \
