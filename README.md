@@ -1,7 +1,7 @@
 # AnimalTracker
 Program for keeping track of animals.
 
-# Requirements
+## Requirements
 
 - Python3
     - PyQt5
