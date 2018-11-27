@@ -6,10 +6,12 @@ App: Animal Tracker
 Author: UnclassedPenguin
 Description: An app to keep track of your Animals
 '''
-
+import os
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 import sys
 sys.path.append('./UI/')
-import os
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox, QMenuBar, \
     QWidget,QScrollArea, QTableWidget, QVBoxLayout,QTableWidgetItem, QAction
@@ -21,13 +23,7 @@ import pandas as pd
 import sqlite3
 import xlsxwriter
 import configparser
-import pprint
 
-abspath = os.path.abspath(__file__)
-dname = os.path.dirname(abspath)
-os.chdir(dname)
-print(dname)
-print(os.getcwd())
 config = configparser.ConfigParser()
 config.read('config.ini')
 database = config['DEFAULT']['database']
@@ -1192,8 +1188,6 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
 
     def create_Familytree(self):
         family = self.create_Family()
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint(family)
 
     def create_Family(self):
         name = self.nameEdit.text()
