@@ -6,6 +6,7 @@ App: Animal Tracker
 Author: UnclassedPenguin
 Description: An app to keep track of your Animals
 '''
+
 import os
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
