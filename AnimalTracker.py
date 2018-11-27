@@ -205,11 +205,9 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         global database
         conn = sqlite3.connect(database)
         curs = conn.cursor()
-        print("You searched! Maybe...")
         namefield = self.nameEntry.text()
         idfield = self.idEntry.text()
         rfidfield = self.rfidEntry.text()
-        print(namefield)
         group = self.groupBox.currentText()
         if group != 'All':
             if len(namefield) > 0:
@@ -272,8 +270,6 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                     self.soldButton.setChecked(False)
 
             elif len(templist) == 0:
-                print("Something Happened")
-
                 self.msg('crit', 'Error', 'Search Error', \
                          'Empty or name not found')
                 self.bdayEntry.setText('')
@@ -352,8 +348,6 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                     self.soldButton.setChecked(False)
 
             elif len(templist) == 0:
-                print("Something Happened")
-
                 self.msg('crit', 'Error', 'Search Error', \
                          'Empty or name not found')
                 self.bdayEntry.setText('')
@@ -432,7 +426,6 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         global database
         global counter
         if len(self.nameEntry.text()) == 0 and len(self.rfidEntry.text()) == 0:
-            print("Doesn't work!")
             self.msg('crit', 'Error', 'Save Error', 'Please enter name and id')
         else:
             notes = self.notesEntry.toPlainText()
