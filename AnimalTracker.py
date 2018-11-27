@@ -1055,7 +1055,6 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
         super(GenealogyPage, self).__init__()
         self.setupUi(self)
 
-        self.testButton.clicked.connect(self.test)
         self.searchButton.clicked.connect(self.print_Display)
         self.closeButton.clicked.connect(self.close)
 
