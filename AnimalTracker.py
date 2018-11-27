@@ -446,8 +446,6 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.soldButton.setChecked(False)
 
     def create_Tables(self):
-        path = os.path.join(os.environ.get("HOME"), "Documents", \
-                            "AnimalTracker")
         conn = sqlite3.connect(database)
         curs = conn.cursor()
         curs.execute('''CREATE TABLE IF NOT EXISTS animals
