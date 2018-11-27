@@ -1510,7 +1510,7 @@ def main():
     #sys.exit(app.exec_())
 
     app = QApplication(sys.argv)
-    app.setStyleSheet(open("style.qss", "r").read())
+    app.setStyleSheet(open("./UI/style.qss", "r").read())
     app.setStyle('Fusion')
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, QtGui.QColor(91, 91, 91))
