@@ -120,7 +120,7 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         conn = sqlite3.connect(database)
         curs = conn.cursor()
         curs.execute('CREATE TABLE IF NOT EXISTS collection (species)')
-        curs.execute('INSERT INTO collection (species) values("Goats");')
+        curs.execute('INSERT INTO collection (species) values("All");')
         curs.execute('SELECT * FROM collection')
         dirtylist = curs.fetchall()
         self.groups = []
@@ -597,7 +597,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
         conn = sqlite3.connect(database)
         curs = conn.cursor()
         curs.execute('CREATE TABLE IF NOT EXISTS collection (species)')
-        curs.execute('INSERT INTO collection (species) values("Goats");')
+        curs.execute('INSERT INTO collection (species) values("All");')
         curs.execute('SELECT * FROM collection')
         dirtylist = curs.fetchall()
         self.groups = []
