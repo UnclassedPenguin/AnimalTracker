@@ -1,7 +1,8 @@
 # AnimalTracker
-Program for keeping track of animals.
+Program for keeping track of animals, a basic herd management software.
+Keep track of animal body condition, weight, parents, children, and more.
 
-## Requirements
+### Requirements
 
 - Python3
     - PyQt5
@@ -10,7 +11,7 @@ Program for keeping track of animals.
     - ConfigParser
     - xlsxwriter
 
-## Usage
+### Usage
 Clone the repository.
 ```shell
 $ cd AnimalTracker
