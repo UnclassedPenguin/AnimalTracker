@@ -2,7 +2,7 @@
 Program for keeping track of animals, a basic herd management software.
 Keep track of animal body condition, weight, parents, children, and more.
 
-### Requirements
+## Requirements
 
 - Python3
     - PyQt5
@@ -11,7 +11,7 @@ Keep track of animal body condition, weight, parents, children, and more.
     - ConfigParser
     - xlsxwriter
 
-### Usage
+## Usage
 Clone the repository.
 ```shell
 $ cd AnimalTracker
