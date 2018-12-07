@@ -12,14 +12,11 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 import sys
-sys.path.append('./UI/')
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox, QMenuBar, \
     QWidget,QScrollArea, QTableWidget, QVBoxLayout,QTableWidgetItem, QAction
 from PyQt5.QtGui import QScreen, QIcon, QPixmap
 from datetime import datetime
-import mainwindow, searchwindow, optionswindow, addgroupdialog, tablewindow, \
-    savefilewindow, printwindow, genealogywindow
 import pandas as pd
 import sqlite3
 import xlsxwriter
@@ -28,6 +25,10 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.ini')
 database = config['DEFAULT']['database']
+UI = config['DEFAULT']['ui']
+sys.path.append(UI)
+import mainwindow, searchwindow, optionswindow, addgroupdialog, tablewindow, \
+    savefilewindow, printwindow, genealogywindow
 
 class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
@@ -56,8 +57,64 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.saveButton.clicked.connect(self.save_Button)
         self.quitButton.clicked.connect(self.close)
 
+    def change_Dates(self):
+        conn = sqlite3.connect(database)
+        curs = conn.cursor()
+        curs.execute('select date, numid from cleananimals;')
+        datefetch = curs.fetchall()
+        print(datefetch)
+        for string in datefetch:
+            print(string[0])
+            value = string[1]
+            date1 = string[0].split('/')
+            print(date1)
+            print(value)
+            date2 = date1[2] + '-' + date1[1] + '-' + date1[0]
+            print(date2)
+            curs.execute('UPDATE cleananimals SET date = ? WHERE numid = ?', \
+                         (date2, value,))
+            conn.commit()
+        conn.close()
+
+    def change_Bdays(self):
+        conn = sqlite3.connect(database)
+        curs = conn.cursor()
+        curs.execute('select bday, numid from cleananimals;')
+        datefetch = curs.fetchall()
+        print(datefetch)
+        for string in datefetch:
+            print(string[0])
+            value = string[1]
+            date1 = string[0].split('/')
+            print(date1)
+            print(value)
+            date2 = '20' + date1[2] + '-' + date1[0] + '-' + date1[1]
+            print(date2)
+            curs.execute('UPDATE cleananimals SET bday = ? WHERE numid = ?', \
+                         (date2, value,))
+            conn.commit()
+        conn.close()
+
     def read_Database(self):
         print("Heyo")
+        # global database
+        # conn = sqlite3.connect(database)
+        # curs = conn.cursor()
+        # #curs.execute('INSERT INTO config (configkey) \
+        #     values("databasefile");')
+        # # curs.execute('select configvalue from config \
+            # where configkey = "databasefile"')
+        # # self.dirtybasefile = curs.fetchall()
+        # # self.tuplebasefile = self.dirtybasefile[0]
+        # self.databasefile = self.tuplebasefile[0]
+        # print(self.dirtybasefile)
+        # print(type(self.dirtybasefile))
+        # print(self.tuplebasefile)
+        # print(type(self.tuplebasefile))
+        # print(self.databasefile)
+        # print(type(self.databasefile))
+        # conn.close()
+        # return self.databasefile
 
     def read_Config(self):
         global database
@@ -69,7 +126,7 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         dirtylist = curs.fetchall()
         self.groups = []
         self.groups = list(sum(dirtylist, ()))
-        print("Groups {}".format(self.groups))
+        print("Clean {}".format(self.groups))
         self.groupBox.clear()
         self.groupBox.addItems(self.groups)
         conn.close()
@@ -205,9 +262,11 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         global database
         conn = sqlite3.connect(database)
         curs = conn.cursor()
+        print("You searched! Maybe...")
         namefield = self.nameEntry.text()
         idfield = self.idEntry.text()
         rfidfield = self.rfidEntry.text()
+        print(namefield)
         group = self.groupBox.currentText()
         if group != 'All':
             if len(namefield) > 0:
@@ -226,8 +285,11 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                                 bodycon, sold FROM animals WHERE groups = ?
                                 and rfid is ?''', (group, rfidfield,))
             templist = list(curs.fetchall())
+            print("Templist: {}".format(templist))
+            print("Length of templist: {}".format(len(templist)))
             if len(templist) > 0:
                 templistlastitem = templist[-1]
+                print("TempListlast item: {}".format(templistlastitem))
 
                 self.bdayEntry.setText(templistlastitem[1])
                 index = self.groupBox.findText(templistlastitem[2], \
@@ -270,6 +332,8 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                     self.soldButton.setChecked(False)
 
             elif len(templist) == 0:
+                print("Something Happened")
+
                 self.msg('crit', 'Error', 'Search Error', \
                          'Empty or name not found')
                 self.bdayEntry.setText('')
@@ -301,8 +365,11 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                                 bodycon, sold FROM animals WHERE rfid is ?''',\
                                 (rfidfield,))
             templist = list(curs.fetchall())
+            print("Templist: {}".format(templist))
+            print("Length of templist: {}".format(len(templist)))
             if len(templist) > 0:
                 templistlastitem = templist[-1]
+                print("TempListlast item: {}".format(templistlastitem))
 
                 self.bdayEntry.setText(templistlastitem[1])
                 index = self.groupBox.findText(templistlastitem[2], \
@@ -348,6 +415,8 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                     self.soldButton.setChecked(False)
 
             elif len(templist) == 0:
+                print("Something Happened")
+
                 self.msg('crit', 'Error', 'Search Error', \
                          'Empty or name not found')
                 self.bdayEntry.setText('')
@@ -426,6 +495,7 @@ class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         global database
         global counter
         if len(self.nameEntry.text()) == 0 and len(self.rfidEntry.text()) == 0:
+            print("Doesn't work!")
             self.msg('crit', 'Error', 'Save Error', 'Please enter name and id')
         else:
             notes = self.notesEntry.toPlainText()
@@ -566,6 +636,9 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
 
     def toggle_All(self):
         x = self.get_Cbvalues()
+        print(x)
+        print("0: {}".format(x.count(0)))
+        print("1: {}".format(x.count(1)))
         self.temp2list = [self.gendercbButton, self.datecbButton,
              self.groupcbButton, self.namecbButton,
              self.bdaycbButton, self.rfidcbButton,
@@ -604,6 +677,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
                 self.msg('info', 'Info', \
                          "File saved to: {}".format(completepath), "" )
             except:
+                print(filepath[-6])
                 self.msg('info', 'Info', \
                          'Invalid Option', "Path Doesn't Exist")
         elif len(savename) > 0 and filetype == '.txt (Text) File':
@@ -664,6 +738,8 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
         self.searchlist = []
         self.searchlist2 = []
         self.get_Cbvalues()
+        print("SEACHLIST: {}".format(self.searchlist2))
+        print("newlist: {}".format(self.newlist))
 
         self.templist_Append(self.datecbButton, 'date')
         self.templist_Append(self.groupcbButton, 'groups')
@@ -682,6 +758,9 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
 
         self.tempstr = ', '.join(self.searchlist)
         self.searchlist2 = self.searchlist[:]
+
+        print('TEMPSTR: {}'.format(self.tempstr))
+        print("TableBox: {}".format(self.tableBox.currentText()))
 
         if self.distinctcbButton.isChecked() \
            and len(self.name2Entry.text()) == 0 \
@@ -715,11 +794,13 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
                 self.sql = "SELECT " + self.tempstr + \
                     " from animals where name IS " + "'" + \
                     self.name2Entry.text() + "'"
+                print(self.sql)
                 x = pd.read_sql_query(self.sql, conn)
             if self.tableBox.currentText() == 'Clean Data':
                 self.sql = "SELECT " + self.tempstr + \
                     " from cleananimals where name IS " + "'" + \
                     self.name2Entry.text() + "'"
+                print(self.sql)
                 x = pd.read_sql_query(self.sql, conn)
 
         elif self.distinctcbButton.isChecked() == False \
@@ -729,11 +810,13 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
                 self.sql = "SELECT " + self.tempstr + \
                     " from animals where rfid IS " + "'" + \
                     self.rfid2Entry.text() + "'"
+                print(self.sql)
                 x = pd.read_sql_query(self.sql, conn)
             if self.tableBox.currentText() == 'Clean Data':
                 self.sql = "SELECT " + self.tempstr + \
                     " from cleananimals where rfid IS " + "'" + \
                     self.rfid2Entry.text() + "'"
+                print(self.sql)
                 x = pd.read_sql_query(self.sql, conn)
 
         elif self.distinctcbButton.isChecked() == False \
@@ -743,15 +826,18 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
                 self.sql = "SELECT " + self.tempstr + \
                     " from animals where id IS " + "'" + \
                     self.id2Entry.text() + "'"
+                print(self.sql)
                 x = pd.read_sql_query(self.sql, conn)
             if self.tableBox.currentText() == 'Clean Data':
                 self.sql = "SELECT " + self.tempstr + \
                     " from cleananimals where id IS " + "'" + \
                     self.id2Entry.text() + "'"
+                print(self.sql)
                 x = pd.read_sql_query(self.sql, conn)
 
         elif self.distinctcbButton.isChecked() \
              and len(self.name2Entry.text()) > 0:
+            print("Invalid Option. Cannot search Name with Distinct.")
             self.sql=""
             x = ""
             self.msg('info', 'Info', 'Invalid Option', \
@@ -760,6 +846,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
 
         elif self.distinctcbButton.isChecked() \
              and len(self.rfid2Entry.text()) > 0:
+            print("Invalid Option. Cannot search RFID with Distinct.")
             self.sql=""
             x = ""
             self.msg('info', 'Info', 'Invalid Option', \
@@ -768,6 +855,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
 
         elif self.distinctcbButton.isChecked() \
              and len(self.id2Entry.text()) > 0:
+            print("Invalid Option. Cannot search ID with Distinct.")
             self.sql=""
             x = ""
             self.msg('info', 'Info', 'Invalid Option', \
@@ -778,6 +866,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
              or len(self.rfid2Entry.text()) > 0 \
              or len(self.id2Entry.text()) > 0 \
              and self.newlist == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]:
+            print("NEWLIST: {}".format(self.newlist))
             self.msg('info', 'Info', \
                      "Please select atleast one checkbox", '' )
             self.sql=''
@@ -807,19 +896,27 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
         else:
             try:
                 if self.tableBox.currentText() == 'Historical Data':
+                    print("Group: {}".format(group))
+                    print("Prestring: {}".format(self.tempstr))
+                    print(group == 'All')
                     if group != 'All':
                         self.sql = "SELECT " + self.tempstr + \
                                    " from animals where groups = ?"
                         x = pd.read_sql_query(self.sql, conn, params=[group])
                     elif group == 'All':
+                        print("From all: {}".format(self.tempstr))
                         self.sql = "SELECT " + self.tempstr + " from animals"
                         x = pd.read_sql_query(self.sql, conn)
                 elif self.tableBox.currentText() == 'Clean Data':
+                    print("Group: {}".format(group))
+                    print("Prestring: {}".format(self.tempstr))
+                    print(group == 'All')
                     if group != 'All':
                         self.sql = "SELECT " + self.tempstr + \
                                    " from cleananimals where groups = ?"
                         x = pd.read_sql_query(self.sql, conn, params=[group])
                     elif group == 'All':
+                        print("From all: {}".format(self.tempstr))
                         self.sql = "SELECT " + self.tempstr + \
                                    " from cleananimals"
                         x = pd.read_sql_query(self.sql, conn)
@@ -846,24 +943,35 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
                              and self.orderbyval[-4:] == 'Des.':
                             self.q=x.sort_values(by =[val], ascending=False)
 
+
+
+                print("Self.q: \n{}".format(self.q))
+
         except:
             if self.newlist == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]:
                 self.msg('info', 'Info', 'Invalid Option', \
                          "Nothing selected")
                 self.p="none"
-
-        if self.orderbyval2 == "None":
-            self.p = self.q
-        elif self.orderbyval2 != 'None':
-            for key, val in self.orderbydict.items():
-                if self.orderbyval2 == key and self.orderbyval2[-4:] == 'Asc.':
-                    self.p=self.q.sort_values(by=[self.orderbydict\
-                                                  [self.orderbyval], val])
-                elif self.orderbyval2 == key \
-                     and self.orderbyval2[-4:] == 'Des.':
-                    self.p=self.q.sort_values(by =[self.orderbydict\
-                                                   [self.orderbyval], val], \
-                                              ascending=False)
+        try:
+            if self.orderbyval2 == "None":
+                print("WE DID THIS ONE")
+                self.p = self.q
+            elif self.orderbyval2 != 'None':
+                for key, val in self.orderbydict.items():
+                    if self.orderbyval2 == key and self.orderbyval2[-4:] == 'Asc.':
+                        print(val)
+                        print("WE DID THIS ONE NUMBER TWO")
+                        self.p=self.q.sort_values(by=[self.orderbydict\
+                                                    [self.orderbyval], val])
+                    elif self.orderbyval2 == key \
+                        and self.orderbyval2[-4:] == 'Des.':
+                        print("WE DID THIS ONE NUMBER THREE")
+                        self.p=self.q.sort_values(by =[self.orderbydict\
+                                                    [self.orderbyval], val], \
+                                                ascending=False)
+        except:
+            pass
+        print("Self.p: \n{}".format(self.p))
 
         self.searchlist.clear()
         curs.close()
@@ -889,6 +997,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
             pass
 
     def get_Cbvalues(self):
+        print("Getting CB Values")
         self.templist = {'self.gendercbButton': self.gendercbButton,
                          'self.datecbButton': self.datecbButton,
                          'self.groupcbButton': self.groupcbButton,
@@ -916,6 +1025,8 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
                 self.newdict[key] = 0
                 self.newlist.append(0)
 
+        print("New list: {}".format(self.newlist))
+        print("Got CB Values")
         return self.newlist
 
     def templist_Append(self, cbvar, dbvar):
@@ -933,6 +1044,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
             tempstr = curs.fetchall()
             if len(tempstr) > 0:
                 self.searchlist.append(o)
+            print('SEARCHLIST: {}'.format(self.searchlist))
             curs.close()
             conn.close()
 
@@ -973,7 +1085,10 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
             msg.exec()
 
     def test(self):
-        family = self.create_Family()
+        family = sel_Family()
+        print(family)
+        for thing in family['siblings'].values():
+            print(thing[2])
 
     def print_Display(self):
         self.window = PrintPage()
@@ -992,6 +1107,7 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
             elif family['name'][2] == 'male' or family['name'][2] == 'weather':
                 self.window.textBrowser.append('''\t{} (M, bday={})'''.format(family['name'][0], family['name'][1]))
             if self.nohalfcbButton.isChecked():
+                print('SIBLINGS2: {}'.format(family['siblings']))
                 for sibling in family['siblings'].values():
                     if sibling[2] == 'female':
                         gender = 'F'
@@ -1000,7 +1116,9 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
                         gender = 'M'
                     self.window.textBrowser.append('''\t{} ({}, bday={})'''.format(sibling[0],gender,sibling[1]))
                 self.window.textBrowser.append('')
+            self.window.textBrowser.append('')
             if self.halffathercbButton.isChecked():
+                # self.window.textBrowser.append('')
                 motherlist = []
                 for sibling in family['siblings'].values():
                     motherlist.append(sibling[3])
@@ -1027,8 +1145,8 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
                                 elif sibling[2] == 'male' or sibling[2] == 'weather':
                                     self.window.textBrowser.append('''\t{} (M, bday={})'''.format(sibling[0], sibling[1]))
                         self.window.textBrowser.append('')
-                self.window.textBrowser.append('')
             elif self.halfmothercbButton.isChecked():
+                # self.window.textBrowser.append('')
                 fatherlist = []
                 for sibling in family['siblings'].values():
                     fatherlist.append(sibling[3])
@@ -1267,12 +1385,21 @@ class OptionsPage(QtWidgets.QMainWindow, optionswindow.Ui_MainWindow):
     def __init__(self, parent=None):
         super(OptionsPage, self).__init__()
         self.setupUi(self)
+        self.Config()
 
         self.defaultdirEntry.setText(str(self.get_defaultdir()))
         self.databaseEdit.setText(str(self.get_defaultdb()))
 
         self.save3Button.clicked.connect(self.save_Options)
         self.close3Button.clicked.connect(self.close)
+
+    def Config(self):
+        uis = ['UI1', 'UI2', 'UI3']
+        self.uiBox.addItems(uis)
+        if UI == 'UI2':
+            self.uiBox.setCurrentIndex(1)
+        elif UI == 'UI3':
+            self.uiBox.setCurrentIndex(2)
 
     def msg(self, messagetype, messagetitle, infotext, messagetext):
         if messagetype == 'info':
@@ -1308,17 +1435,24 @@ class OptionsPage(QtWidgets.QMainWindow, optionswindow.Ui_MainWindow):
         config.read('config.ini')
         return config['DEFAULT']['database']
 
+    def get_Ui(self):
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        return config['DEFAULT']['ui']
+
     def save_Options(self):
         config = configparser.ConfigParser()
         dirpath = self.defaultdirEntry.text()
         databaseEditv = self.databaseEdit.text()
+        uiv = self.uiBox.currentText()
+        print(uiv)
         config.set('DEFAULT', 'database', databaseEditv)
         config.set('DEFAULT', 'savedir', dirpath)
+        config.set('DEFAULT', 'ui', uiv)
         with open('config.ini', 'w') as configfile:
             config.write(configfile)
         self.msg('info', 'Info', \
-                 '''Saved. If you changed database requires
-                 a restart to take affect.''', '')
+                 '''Saved. \nIf you changed database or UI a restart is required to take affect.''', '')
 
 class addgroupPage(QtWidgets.QDialog, addgroupdialog.Ui_Dialog):
 
@@ -1338,8 +1472,6 @@ class savefilePage(QtWidgets.QDialog, savefilewindow.Ui_Dialog):
 
         self.filetypeBox.currentTextChanged.connect(self.on_combo_Change)
 
-        self.path = os.path.join(os.environ.get("HOME"), "Documents", \
-                                 "AnimalTracker", "")
         self.savepathEntry.setText(str(self.get_defaultdir()))
 
     def on_combo_Change(self, value):
@@ -1385,7 +1517,7 @@ def main():
     #sys.exit(app.exec_())
 
     app = QApplication(sys.argv)
-    app.setStyleSheet(open("./UI/style.qss", "r").read())
+    app.setStyleSheet(open("./{}/style.qss".format(UI), "r").read())
     app.setStyle('Fusion')
     palette = QtGui.QPalette()
     palette.setColor(QtGui.QPalette.Window, QtGui.QColor(91, 91, 91))

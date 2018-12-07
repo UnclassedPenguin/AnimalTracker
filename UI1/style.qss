@@ -1,0 +1,45 @@
+QTabWidget {
+    background-color:      #5b5b5b; 
+}
+
+QRadioButton {
+    background-color:       #5b5b5b;
+    color:                  white;
+}
+
+QRadioButton::indicator {
+    width:                  15px;
+    height:                 15px;
+    border-radius:          5px;
+}
+
+QRadioButton::indicator:checked {
+    background-color:       #538cc6 ;
+    border:                 1px solid black;
+}
+
+QRadioButton::indicator:unchecked {
+    background-color:       black;
+    border:                 1px solid black;
+}
+
+QCheckBox {
+    background-color:       #5b5b5b;
+    color:                  white;
+}
+
+QCheckBox::indicator {
+    width:                  15px;
+    height:                 15px;
+    border-radius:          10px;
+}
+
+QCheckBox::indicator:checked {
+    background-color:       #538cc6 ;
+    border:                 1px solid black;
+}
+
+QCheckBox::indicator:unchecked {
+    background-color:       black;
+    border:                 1px solid black;
+}
