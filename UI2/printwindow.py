@@ -5,12 +5,7 @@
 # Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
-'''
-Copyright © 2018 UnclassedPenguin
-App: Animal Tracker
-Author: UnclassedPenguin
-Description: An app to keep track of your Animals
-'''
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
@@ -28,11 +23,17 @@ class Ui_MainWindow(object):
         self.gridLayout = QtWidgets.QGridLayout(self.frame)
         self.gridLayout.setObjectName("gridLayout")
         self.textBrowser = QtWidgets.QTextBrowser(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.textBrowser.setFont(font)
         self.textBrowser.setObjectName("textBrowser")
         self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 2)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 1, 0, 1, 1)
         self.closeButton = QtWidgets.QPushButton(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.closeButton.setFont(font)
         self.closeButton.setObjectName("closeButton")
         self.gridLayout.addWidget(self.closeButton, 1, 1, 1, 1)
         self.verticalLayout.addWidget(self.frame)

@@ -5,12 +5,7 @@
 # Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
-'''
-Copyright © 2018 UnclassedPenguin
-App: Animal Tracker
-Author: UnclassedPenguin
-Description: An app to keep track of your Animals
-'''
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
@@ -32,6 +27,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.table = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.table.setFont(font)
         self.table.setObjectName("table")
         self.table.setColumnCount(0)
         self.table.setRowCount(0)
@@ -50,6 +48,9 @@ class Ui_MainWindow(object):
         self.actionClose_2 = QtWidgets.QAction(MainWindow)
         self.actionClose_2.setObjectName("actionClose_2")
         self.actionSave_As = QtWidgets.QAction(MainWindow)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.actionSave_As.setFont(font)
         self.actionSave_As.setObjectName("actionSave_As")
         self.menuFile.addAction(self.actionSave_As)
         self.menuFile.addSeparator()

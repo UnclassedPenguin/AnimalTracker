@@ -584,7 +584,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
         self.tableBox.clear()
         self.tableBox.addItems(list2)
         self.toggleallButton.clicked.connect(self.toggle_All)
-        self.search2Button.clicked.connect(self.search22_Button)
+        self.search2Button.clicked.connect(self.search_Two)
         self.save2Button.clicked.connect(self.getfile_Path)
         self.genealogyButton.clicked.connect(self.goto_Genealogypage)
         self.testButton.clicked.connect(self.test)
@@ -668,7 +668,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
                     completepath = filepath + savename + '.xlsx'
                 elif filepath[-1:] != '/':
                     completepath = filepath + '/' + savename + '.xlsx'
-                df = self.search2_Button()
+                df = self.search_One()
                 writer = pd.ExcelWriter(completepath, engine='xlsxwriter')
                 # Convert the dataframe to an XlsxWriter Excel object.
                 df.to_excel(writer, sheet_name='Sheet1')
@@ -686,7 +686,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
             elif filepath[-1:] != '/':
                 completepath = filepath + '/' + savename + '.txt'
             try:
-                df = self.search2_Button()
+                df = self.search_One()
                 savefile = open(completepath, 'a')
                 savefile.write("\n")
                 savefile.write("---------------------------------------------")
@@ -705,7 +705,7 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
                 self.msg('info', 'Info', \
                          'Invalid Option', "Please Enter a file name")
 
-    def search2_Button(self):
+    def search_One(self):
         pd.set_option('display.max_rows', 500)
         pd.set_option('display.max_columns', 500)
         pd.set_option('display.width', 1000)
@@ -978,8 +978,8 @@ class SearchPage(QtWidgets.QMainWindow, searchwindow.Ui_MainWindow):
         conn.close()
         return self.p
 
-    def search22_Button(self):
-        self.y = self.search2_Button()
+    def search_Two(self):
+        self.y = self.search_One()
         if isinstance(self.y, pd.core.frame.DataFrame):
             self.window = DisplayPage()
             df = self.y
