@@ -1116,9 +1116,7 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
                         gender = 'M'
                     self.window.textBrowser.append('''\t{} ({}, bday={})'''.format(sibling[0],gender,sibling[1]))
                 self.window.textBrowser.append('')
-            self.window.textBrowser.append('')
-            if self.halffathercbButton.isChecked():
-                # self.window.textBrowser.append('')
+            elif self.halffathercbButton.isChecked():
                 motherlist = []
                 for sibling in family['siblings'].values():
                     motherlist.append(sibling[3])
@@ -1132,7 +1130,7 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
                                 self.window.textBrowser.append('''\t{} (F, bday={})'''.format(sibling[0], sibling[1]))
                             elif sibling[2] == 'male' or sibling[2] == 'weather':
                                 self.window.textBrowser.append('''\t{} (M, bday={})'''.format(sibling[0], sibling[1]))
-                    self.window.textBrowser.append('')
+                self.window.textBrowser.append('')
                 for mother in newlist:
                     if mother != family['parents']['mother'][0]:
                         self.window.textBrowser.append('''{} (M, bday={})'''.format(family['parents']['father'][0], \
@@ -1146,7 +1144,6 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
                                     self.window.textBrowser.append('''\t{} (M, bday={})'''.format(sibling[0], sibling[1]))
                         self.window.textBrowser.append('')
             elif self.halfmothercbButton.isChecked():
-                # self.window.textBrowser.append('')
                 fatherlist = []
                 for sibling in family['siblings'].values():
                     fatherlist.append(sibling[3])
@@ -1160,7 +1157,7 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
                                 self.window.textBrowser.append('''\t{} (F, bday={})'''.format(sibling[0], sibling[1]))
                             elif sibling[2] == 'male' or sibling[2] == 'weather':
                                 self.window.textBrowser.append('''\t{} (M, bday={})'''.format(sibling[0], sibling[1]))
-                    self.window.textBrowser.append('')
+                self.window.textBrowser.append('')
                 for father in newlist:
                     if father != family['parents']['father'][0]:
                         self.window.textBrowser.append('''{} (M, bday={})'''.format(father, self.get_Bday(father)))
@@ -1173,7 +1170,6 @@ class GenealogyPage(QtWidgets.QMainWindow, genealogywindow.Ui_MainWindow):
                                 elif sibling[2] == 'male' or sibling[2] == 'weather':
                                     self.window.textBrowser.append('''\t{} (M, bday={})'''.format(sibling[0], sibling[1]))
                         self.window.textBrowser.append('')
-                self.window.textBrowser.append('')
             for partner in family['partners'].values():
                 if family['name'][2] == 'female':
                     self.window.textBrowser.append('''\t{} (M, bday={})'''.format(partner, self.get_Bday(partner)))
