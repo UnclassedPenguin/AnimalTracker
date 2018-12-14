@@ -30,10 +30,10 @@ sys.path.append(UI)
 import mainwindow, searchwindow, optionswindow, addgroupdialog, tablewindow, \
     savefilewindow, printwindow, genealogywindow
 
-class ATApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
+class AnimalTrackerApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
 
     def __init__(self, parent=None):
-        super(ATApp, self).__init__()
+        super(AnimalTrackerApp, self).__init__()
         self.setupUi(self)
         self.setWindowIcon(QtGui.QIcon('./Other/AnimalTrackerIcon.png'))
 
@@ -1508,7 +1508,7 @@ class DisplayPage(QtWidgets.QMainWindow, tablewindow.Ui_MainWindow):
 
 def main():
     #app = QApplication(sys.argv)
-    #main = ATApp()
+    #main = AnimalTrackerApp()
     #main.show()
     #sys.exit(app.exec_())
 
@@ -1530,7 +1530,7 @@ def main():
                      QtGui.QColor(51, 102, 153).lighter())
     palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.white)
     app.setPalette(palette)
-    MainWindow = ATApp()
+    MainWindow = AnimalTrackerApp()
     MainWindow.show()
     sys.exit(app.exec_())
 
