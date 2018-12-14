@@ -55,7 +55,11 @@ class AnimalTrackerApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.advsearchButton.clicked.connect(self.goto_SearchPage)
         self.optionsButton.clicked.connect(self.goto_OptionsPage)
         self.saveButton.clicked.connect(self.save_Button)
-        self.quitButton.clicked.connect(self.close)
+        self.quitButton.clicked.connect(self.close_All)
+
+    def close_All(self):
+        app = QApplication.instance()
+        app.closeAllWindows()
 
     def change_Dates(self):
         conn = sqlite3.connect(database)
