@@ -1489,7 +1489,6 @@ class PrintPage(QtWidgets.QMainWindow, printwindow.Ui_MainWindow):
         super(PrintPage, self).__init__()
         self.widget = QWidget()
         self.setupUi(self)
-        self.closeButton.clicked.connect(self.close)
 
 class DisplayPage(QtWidgets.QMainWindow, tablewindow.Ui_MainWindow):
 
