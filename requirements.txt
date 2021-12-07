@@ -1,0 +1,5 @@
+PyQt5
+pandas
+sqlite3
+ConfigParser
+XlsxWriter
