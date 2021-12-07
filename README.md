@@ -15,14 +15,14 @@ Keep track of animal body condition, weight, parents, children, and more.
 Clone the repository.
 ```shell
 $ cd AnimalTracker
-$ python AnimalTracker.py
+$ python3 AnimalTracker.py
 ```
 
 When ran, the program reads the config.ini file which only has to contain four lines:
 
 ```init
 [DEFAULT]
-database = ATDataBase.dat
+database = TestATDataBase.dat
 savedir = ./Saves/
 ui = UI3
 ```
